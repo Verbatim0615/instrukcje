@@ -1,4 +1,4 @@
-# SSH - Skrót
+# SSH - Skrot
 
 ## Instalacja
 
