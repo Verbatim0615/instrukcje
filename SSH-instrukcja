@@ -1,0 +1,149 @@
+# SSH - Skrót
+
+## Instalacja
+
+```
+# Debian/Ubuntu
+sudo apt install openssh-client openssh-server
+
+# RHEL/CentOS
+sudo yum install openssh-clients openssh-server
+
+# Fedora
+sudo dnf install openssh-clients openssh-server
+
+# Arch
+sudo pacman -S openssh
+```
+
+Start usługi:
+```
+sudo systemctl start ssh && sudo systemctl enable ssh
+```
+
+## Łączenie
+
+```
+ssh user@host
+ssh -p 2222 user@host          # inny port
+```
+
+## Klucze SSH
+
+Generowanie:
+```
+ssh-keygen -t ed25519 -C "mail@example.com"
+# lub dla starszych systemów:
+ssh-keygen -t rsa -b 4096
+```
+
+Kopiowanie na serwer:
+```
+ssh-copy-id user@host
+```
+
+Ręcznie:
+```
+cat ~/.ssh/id_ed25519.pub | ssh user@host "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+```
+
+## Config (~/.ssh/config)
+
+```
+Host prod
+    HostName 192.168.1.100
+    User admin
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519
+
+Host dev
+    HostName dev.example.com
+    User developer
+    Port 2222
+    IdentityFile ~/.ssh/dev_key
+
+Host jump
+    HostName bastion.example.com
+    User jump_user
+
+Host internal
+    HostName 10.0.0.50
+    User analyst
+    ProxyJump jump
+```
+
+Użycie:
+```
+ssh prod
+```
+
+## Tunelowanie
+
+Local forwarding:
+```
+ssh -L 8080:localhost:3306 user@remote
+```
+
+Remote forwarding:
+```
+ssh -R 9090:localhost:80 user@remote
+```
+
+SOCKS proxy:
+```
+ssh -D 1080 user@remote
+```
+
+## Keep-alive
+
+W `~/.ssh/config`:
+```
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+```
+
+## ssh-agent
+
+```
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+ssh-add -l                     # lista kluczy
+```
+
+## Hardening (/etc/ssh/sshd_config)
+
+```
+PermitRootLogin no
+PasswordAuthentication no
+Port 2222
+AllowUsers user1 user2
+PermitEmptyPasswords no
+```
+
+Restart:
+```
+sudo systemctl restart sshd
+```
+
+## Kopiowanie plików
+
+SCP:
+```
+scp file user@host:/path/
+scp -r dir/ user@host:/path/
+```
+
+rsync:
+```
+rsync -avz /local/ user@host:/remote/
+```
+
+## Aliasy
+
+W `.bashrc`:
+```
+alias sp='ssh prod'
+alias sd='ssh dev'
+```
+```
