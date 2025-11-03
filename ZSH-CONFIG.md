@@ -1,5 +1,3 @@
-
-
 # START
 source "$HOME/.zinit/bin/zinit.zsh"
 zinit light ohmyzsh/ohmyzsh
@@ -21,7 +19,7 @@ zinit light agkozak/zsh-z
 # Uzupełnianie
 zinit light zsh-users/zsh-completions
 
-#CONFIG
+# CONFIG
 
 # Ustawia domyślny edytor na Vim.
 export EDITOR='vim'
@@ -37,10 +35,9 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;31m'
 
 
-# ALIASy 
+# ALIASY 
 
-
-# --- Podstawowe aliasy ---
+## Podstawy
 alias v='$EDITOR'
 alias c='clear'
 alias ..='cd ..'
@@ -50,14 +47,14 @@ alias ll='ls -lh'
 alias l.='ls -d .* --color=auto'
 alias grep='grep --color=auto'
 
-# Sieć
+## Sieć
 alias myip='curl -s ifconfig.me; echo'
 alias b64enc='base64'
 alias b64dec='base64 -d'
 alias sha256='openssl dgst -sha256'
 alias nmap-top='sudo nmap -sS --top-ports 1000'
 
-# --- Aliasy dla Git ---
+## GIT
 alias g='git'
 alias ga='git add'
 alias gaa='git add -A'
@@ -69,14 +66,14 @@ alias gps='git push'
 alias glog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 
-# FUNKCE
+# FUNKCJE
 
-# Tworzy katalog i od razu do niego przechodzi.
+## Tworzy katalog i od razu do niego przechodzi.
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-# Rozpakowuje dowolne archiwum. Użycie: `extract <plik>`.
+## Rozpakowuje dowolne archiwum. Użycie: `extract <plik>`.
 extract() {
     if [ -f "$1" ]; then
         case "$1" in
@@ -98,7 +95,7 @@ extract() {
     fi
 }
 
-# Szybka funkcja do sprawdzenia, czy DNSy odpowiadają.
+## Szybka funkcja do sprawdzenia, czy DNSy odpowiadają.
 checkdns() {
     echo "Pinging Cloudflare DNS (1.1.1.1)..."
     if ping -c 2 1.1.1.1 &> /dev/null; then
@@ -116,7 +113,7 @@ checkdns() {
     echo "\nTest zakończony. Jeśli widzisz błędy, problem może leżeć w DNS lub połączeniu sieciowym."
 }
 
-# Uruchamia prosty serwer HTTP w bieżącym katalogu (port 8000).
+## Uruchamia prosty serwer HTTP w bieżącym katalogu (port 8000).
 py-server() {
   python3 -m http.server "${1:-8000}"
 }
@@ -147,15 +144,11 @@ setopt EXTENDED_GLOB    # Zaawansowane wzorce glob
 # OPCJE
 
 # Lepsze kolory dla menu uzupełniania (completion menu).
-# zstyle ':completion:*' menu select
-# zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #*0=01;31'
-# zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# zstyle ':completion:*' group-name ''
-# zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*' menu select
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #*0=01;31'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%B%d%b'
 
-# Przykładowa konfiguracja dla motywu powerlevel10k.
-# Można to wygenerować komendą `p10k configure`.
-# typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon dir vcs)
-# typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time background_jobs time)
 
 
